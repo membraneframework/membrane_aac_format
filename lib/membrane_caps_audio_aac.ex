@@ -1,16 +1,17 @@
-defmodule Membrane.Caps.AAC do
+defmodule Membrane.Caps.Audio.AAC do
   @moduledoc """
   Capabilities for [Advanced Audio Codec](https://wiki.multimedia.cx/index.php/Understanding_AAC).
 
   Conversion functions in this module conform to the [ADTS encapsulation](https://wiki.multimedia.cx/index.php/ADTS).
   """
   @type t :: %__MODULE__{
-          profile: :main | :LC | :SSR | :LTP | :HE,
+          profile: :main | :LC | :SSR | :LTP | :HE | :HEv2,
+          mpeg_version: 2 | 4,
           sample_rate: pos_integer,
           channels: pos_integer,
           samples_per_frame: 1024 | 960,
           frames_per_buffer: pos_integer,
-          packetization: :raw | :adts
+          encapsulation: :none | :adts
         }
 
   @enforce_keys [
