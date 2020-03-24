@@ -53,7 +53,7 @@ defmodule Membrane.Caps.Audio.AAC.MixProject do
       {:membrane_core, "~> 0.5.0"},
       {:bimap, "~> 1.0"},
       {:ex_doc, "~> 0.21", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0.0-rc.7", only: [:dev, :test], runtime: false}
+      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false}
     ]
   end
 end
