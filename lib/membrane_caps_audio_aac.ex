@@ -8,7 +8,7 @@ defmodule Membrane.Caps.Audio.AAC do
   @type samples_per_frame_t :: 1024 | 960
 
   @typedoc """
-  Indicates whether stream contains AAC frames only, or they are encapsulated
+  Indicates whether stream contains AAC frames only or are they encapsulated
   in [ADTS](https://wiki.multimedia.cx/index.php/ADTS)
   """
   @type encapsulation_t :: :none | :ADTS
