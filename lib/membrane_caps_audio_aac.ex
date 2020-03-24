@@ -1,17 +1,48 @@
 defmodule Membrane.Caps.Audio.AAC do
   @moduledoc """
   Capabilities for [Advanced Audio Codec](https://wiki.multimedia.cx/index.php/Understanding_AAC).
-
-  Conversion functions in this module conform to the [ADTS encapsulation](https://wiki.multimedia.cx/index.php/ADTS).
   """
+
+  @type profile_t :: :main | :LC | :SSR | :LTP | :HE | :HEv2
+  @type mpeg_version_t :: 2 | 4
+  @type samples_per_frame_t :: 1024 | 960
+
+  @typedoc """
+  Indicates whether stream contains AAC frames only, or they are encapsulated
+  in [ADTS](https://wiki.multimedia.cx/index.php/ADTS)
+  """
+  @type encapsulation_t :: :none | :ADTS
+
+  @typedoc """
+  Identifiers of [MPEG Audio Object Types](https://wiki.multimedia.cx/index.php/MPEG-4_Audio#Audio_Object_Types)
+  """
+  @type audio_object_type_id_t :: 1..5 | 29
+
+  @typedoc """
+  Identifiers of [MPEG Audio sampling frequencies](https://wiki.multimedia.cx/index.php/MPEG-4_Audio#Sampling_Frequencies)
+  """
+  @type sampling_frequency_id_t :: 0..12 | 15
+
+  @typedoc """
+  Identifiers of [MPEG Audio channel configurations](https://wiki.multimedia.cx/index.php/MPEG-4_Audio#Channel_Configurations)
+  """
+  @type channel_config_id_t :: 0..7
+
+  @typedoc """
+  AAC frame length identifiers.
+
+  `0` indicates 1024 samples/frame and `1` - 960 samples/frame.
+  """
+  @type frame_length_id_t :: 0 | 1
+
   @type t :: %__MODULE__{
-          profile: :main | :LC | :SSR | :LTP | :HE | :HEv2,
-          mpeg_version: 2 | 4,
+          profile: profile_t,
+          mpeg_version: mpeg_version_t,
           sample_rate: pos_integer,
           channels: pos_integer,
           samples_per_frame: 1024 | 960,
           frames_per_buffer: pos_integer,
-          encapsulation: :none | :adts
+          encapsulation: encapsulation_t
         }
 
   @enforce_keys [
@@ -19,80 +50,91 @@ defmodule Membrane.Caps.Audio.AAC do
     :sample_rate,
     :channels
   ]
-  defstruct @enforce_keys ++ [samples_per_frame: 1024, frames_per_buffer: 1, packetization: :raw]
+  defstruct @enforce_keys ++
+              [
+                mpeg_version: 2,
+                samples_per_frame: 1024,
+                frames_per_buffer: 1,
+                encapsulation: :raw
+              ]
 
-  @profile_id BiMap.new(%{
-                1 => :main,
-                2 => :LC,
-                3 => :SSR,
-                4 => :LTP
-              })
+  @audio_object_type BiMap.new(%{
+                       1 => :main,
+                       2 => :LC,
+                       3 => :SSR,
+                       4 => :LTP,
+                       5 => :HE,
+                       29 => :HEv2
+                     })
 
-  @sampling_frequency_id BiMap.new(%{
-                           0 => 96000,
-                           1 => 88200,
-                           2 => 64000,
-                           3 => 48000,
-                           4 => 44100,
-                           5 => 32000,
-                           6 => 24000,
-                           7 => 22050,
-                           8 => 16000,
-                           9 => 12000,
-                           10 => 11025,
-                           11 => 8000,
-                           12 => 7350
-                         })
+  @sampling_frequency BiMap.new(%{
+                        0 => 96000,
+                        1 => 88200,
+                        2 => 64000,
+                        3 => 48000,
+                        4 => 44100,
+                        5 => 32000,
+                        6 => 24000,
+                        7 => 22050,
+                        8 => 16000,
+                        9 => 12000,
+                        10 => 11025,
+                        11 => 8000,
+                        12 => 7350,
+                        15 => :explicit
+                      })
 
-  @channel_setup_id BiMap.new(%{
-                      0 => :unknown,
-                      1 => 1,
-                      2 => 2,
-                      3 => 3,
-                      4 => 4,
-                      5 => 5,
-                      6 => 6,
-                      7 => 8
-                    })
+  @channel_config BiMap.new(%{
+                    0 => :AOT_specific,
+                    1 => 1,
+                    2 => 2,
+                    3 => 3,
+                    4 => 4,
+                    5 => 5,
+                    6 => 6,
+                    7 => 8
+                  })
 
-  @frame_length_id BiMap.new(%{
-                     0 => 1024,
-                     1 => 960
-                   })
+  @frame_length BiMap.new(%{
+                  0 => 1024,
+                  1 => 960
+                })
 
-  @spec profile_id_to_profile(profile_id :: pos_integer) ::
-          {:ok, :main | :LC | :SSR | :LTP} | :error
-  def profile_id_to_profile(profile_id), do: BiMap.fetch(@profile_id, profile_id)
+  @spec aot_id_to_profile(audio_object_type_id_t) :: {:ok, profile_t}
+  @spec aot_id_to_profile(any) :: :error
+  def aot_id_to_profile(audio_object_type_id),
+    do: BiMap.fetch(@audio_object_type, audio_object_type_id)
 
-  @spec profile_id_to_profile(:main | :LC | :SSR | :LTP) :: {:ok, profile_id :: pos_integer}
-  @spec profile_id_to_profile(atom) :: :error
-  def profile_to_profile_id(profile), do: BiMap.fetch_key(@profile_id, profile)
+  @spec profile_to_aot_id(profile_t) :: {:ok, audio_object_type_id_t}
+  @spec profile_to_aot_id(any) :: :error
+  def profile_to_aot_id(profile), do: BiMap.fetch_key(@audio_object_type, profile)
 
-  @spec sampling_frequency_id_to_sample_rate(sampling_frequency_id :: non_neg_integer) ::
-          {:ok, pos_integer} | :error
-  def sampling_frequency_id_to_sample_rate(pos_integer),
-    do: BiMap.fetch(@sampling_frequency_id, sfi)
+  @spec sampling_frequency_id_to_sample_rate(sampling_frequency_id_t) ::
+          {:ok, pos_integer | :explicit} | :error
+  def sampling_frequency_id_to_sample_rate(sampling_frequency_id),
+    do: BiMap.fetch(@sampling_frequency, sampling_frequency_id)
 
-  @spec sample_rate_to_sampling_frequency_id(sample_rate :: pos_integer) ::
-          {:ok, non_neg_integer} | :error
+  @spec sample_rate_to_sampling_frequency_id(sample_rate :: pos_integer | :explicit) ::
+          {:ok, sampling_frequency_id_t} | :error
   def sample_rate_to_sampling_frequency_id(sample_rate),
-    do: BiMap.fetch_key(@sampling_frequency_id, sample_rate)
+    do: BiMap.fetch_key(@sampling_frequency, sample_rate)
 
-  @spec channel_setup_id_to_channels(channel_setup_id :: non_neg_integer) ::
-          {:ok, pos_integer | :unknown} | :error
-  def channel_setup_id_to_channels(channel_setup_id),
-    do: BiMap.fetch(@channel_setup_id, channel_setup_id)
+  @spec channel_config_id_to_channels(channel_config_id_t) :: {:ok, pos_integer | :AOT_specific}
+  @spec channel_config_id_to_channels(any) :: :error
+  def channel_config_id_to_channels(channel_config_id),
+    do: BiMap.fetch(@channel_config, channel_config_id)
 
-  @spec channels_to_channel_setup_id(channels :: pos_integer | :unknown) ::
-          {:ok, non_neg_integer} | :error
-  def channels_to_channel_setup_id(channels), do: BiMap.fetch_key(@channel_setup_id, channels)
+  @spec channels_to_channel_config_id(channels :: pos_integer | :AOT_specific) ::
+          {:ok, channel_config_id_t} | :error
+  def channels_to_channel_config_id(channels), do: BiMap.fetch_key(@channel_config, channels)
 
-  @spec frame_length_id_to_samples_per_frame(frame_length_id :: non_neg_integer) ::
-          {:ok, pos_integer} | :error
+  @spec frame_length_id_to_samples_per_frame(frame_length_id_t) ::
+          {:ok, samples_per_frame_t} | :error
   def frame_length_id_to_samples_per_frame(frame_length_id),
-    do: BiMap.fetch(@frame_length_id, frame_length_id)
+    do: BiMap.fetch(@frame_length, frame_length_id)
 
-  @spec samples_per_frame_to_frame_length_id(pos_integer) :: {:ok, pos_integer} | :error
+  @spec samples_per_frame_to_frame_length_id(samples_per_frame_t) :: {:ok, pos_integer}
+  @spec samples_per_frame_to_frame_length_id(any) :: :error
   def samples_per_frame_to_frame_length_id(samples_per_frame),
-    do: BiMap.fetch_key(@frame_length_id, samples_per_frame)
+    do: BiMap.fetch_key(@frame_length, samples_per_frame)
 end
