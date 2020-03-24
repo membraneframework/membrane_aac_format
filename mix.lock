@@ -1,5 +1,5 @@
 %{
-  "bimap": {:hex, :bimap, "1.0.1", "6c92d76d73ed1cf04b2b6e8548c732256da5fe9efe9ab64b90724db58bdc8f18", [:mix], [], "hexpm", "7a992441c9d54a4fe02328fb53e1a83e7a133566fa3c0b9833473ecf7d79a157"},
+  "bimap": {:hex, :bimap, "1.1.0", "135ce3bf1c0e02b83559493b3a9f2ec970afb57e4d1ba47a0247295f9f21e2ad", [:mix], [], "hexpm", "2cb7959ad57e0b70f13711e9c3cdbb89e6caf91bb4feb5c2f05ad3ebc80bf266"},
   "bunch": {:hex, :bunch, "1.2.0", "f26c6c84e2e5e245620c73a0a4560ca91a75b25744012537e055426568916ab7", [:mix], [], "hexpm", "66c1ea8716a7c03124f3bf62c0b167f7294c4948d1688bd2027dadaa4ec032de"},
   "coerce": {:hex, :coerce, "1.0.1", "211c27386315dc2894ac11bc1f413a0e38505d808153367bd5c6e75a4003d096", [:mix], [], "hexpm", "b44a691700f7a1a15b4b7e2ff1fa30bebd669929ac8aa43cffe9e2f8bf051cf1"},
   "dialyxir": {:hex, :dialyxir, "1.0.0", "6a1fa629f7881a9f5aaf3a78f094b2a51a0357c843871b8bc98824e7342d00a5", [:mix], [{:erlex, ">= 0.2.6", [hex: :erlex, repo: "hexpm", optional: false]}], "hexpm", "aeb06588145fac14ca08d8061a142d52753dbc2cf7f0d00fc1013f53f8654654"},
