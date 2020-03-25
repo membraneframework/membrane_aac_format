@@ -1,4 +1,4 @@
-defmodule Membrane.Caps.AAC.MixProject do
+defmodule Membrane.Caps.Audio.AAC.MixProject do
   use Mix.Project
 
   @version "0.1.0"
@@ -6,7 +6,7 @@ defmodule Membrane.Caps.AAC.MixProject do
 
   def project do
     [
-      app: :membrane_caps_aac,
+      app: :membrane_caps_audio_aac,
       version: @version,
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -33,7 +33,7 @@ defmodule Membrane.Caps.AAC.MixProject do
       main: "readme",
       extras: ["README.md"],
       source_ref: "v#{@version}",
-      nest_modules_by_prefix: [Membrane.Caps.AAC]
+      nest_modules_by_prefix: [Membrane.Caps.Audio.AAC]
     ]
   end
 
@@ -51,9 +51,9 @@ defmodule Membrane.Caps.AAC.MixProject do
   defp deps do
     [
       {:membrane_core, "~> 0.5.0"},
-      {:bimap, "~> 1.0"},
+      {:bimap, "~> 1.1"},
       {:ex_doc, "~> 0.21", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0.0-rc.7", only: [:dev, :test], runtime: false}
+      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false}
     ]
   end
 end
