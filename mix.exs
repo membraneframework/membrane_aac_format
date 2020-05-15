@@ -1,18 +1,18 @@
-defmodule Membrane.Caps.Audio.AAC.MixProject do
+defmodule Membrane.AAC.Format.MixProject do
   use Mix.Project
 
   @version "0.1.0"
-  @github_url "https://github.com/membraneframework/membrane-caps-aac"
+  @github_url "https://github.com/membraneframework/membrane_aac_format"
 
   def project do
     [
-      app: :membrane_caps_audio_aac,
+      app: :membrane_aac_format,
       version: @version,
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
-      description: "Membrane Multimedia Framework (AAC Caps)",
+      description: "Advanced Audio Codec Membrane format",
       package: package(),
-      name: "Membrane Caps: AAC",
+      name: "Membrane AAC Format",
       source_url: @github_url,
       docs: docs(),
       deps: deps()
@@ -32,8 +32,7 @@ defmodule Membrane.Caps.Audio.AAC.MixProject do
     [
       main: "readme",
       extras: ["README.md"],
-      source_ref: "v#{@version}",
-      nest_modules_by_prefix: [Membrane.Caps.Audio.AAC]
+      source_ref: "v#{@version}"
     ]
   end
 
