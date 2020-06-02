@@ -1,4 +1,4 @@
-defmodule Membrane.Caps.Audio.AAC do
+defmodule Membrane.AAC do
   @moduledoc """
   Capabilities for [Advanced Audio Codec](https://wiki.multimedia.cx/index.php/Understanding_AAC).
   """
@@ -55,7 +55,7 @@ defmodule Membrane.Caps.Audio.AAC do
                 mpeg_version: 2,
                 samples_per_frame: 1024,
                 frames_per_buffer: 1,
-                encapsulation: :raw
+                encapsulation: :none
               ]
 
   @audio_object_type BiMap.new(%{
