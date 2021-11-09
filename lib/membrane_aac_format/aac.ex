@@ -116,7 +116,7 @@ defmodule Membrane.AAC do
   def sample_rate_to_sampling_frequency_id(sample_rate),
     do: BiMap.fetch_key!(@sampling_frequency, sample_rate)
 
-  @spec channel_config_id_to_channels(channel_config_id_t) :: {:ok, pos_integer | :AOT_specific}
+  @spec channel_config_id_to_channels(channel_config_id_t) :: pos_integer | :AOT_specific
   def channel_config_id_to_channels(channel_config_id),
     do: BiMap.fetch!(@channel_config, channel_config_id)
 
