@@ -1,6 +1,6 @@
 defmodule Membrane.RemoteStream.AAC do
   @moduledoc """
-  Capabilities defining Remote AAC Stream with known audio decoder configuration
+  Format definition for Remote AAC Stream with known audio decoder configuration
   """
 
   @enforce_keys [:audio_specific_config]
