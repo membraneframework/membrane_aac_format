@@ -1,4 +1,4 @@
-defmodule Membrane.RemoteStream.AAC do
+defmodule Membrane.AAC.RemoteStream do
   @moduledoc """
   Format definition for unparsed AAC stream with audio decoder configuration transmitted out-of-band.
 
