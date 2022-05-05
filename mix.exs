@@ -1,7 +1,7 @@
 defmodule Membrane.AAC.Format.MixProject do
   use Mix.Project
 
-  @version "0.6.0"
+  @version "0.7.0"
   @github_url "https://github.com/membraneframework/membrane_aac_format"
 
   def project do
@@ -31,7 +31,7 @@ defmodule Membrane.AAC.Format.MixProject do
   defp docs do
     [
       main: "readme",
-      extras: ["README.md"],
+      extras: ["README.md", "LICENSE"],
       source_ref: "v#{@version}"
     ]
   end
@@ -39,7 +39,7 @@ defmodule Membrane.AAC.Format.MixProject do
   defp package do
     [
       maintainers: ["Membrane Team"],
-      licenses: ["Apache 2.0"],
+      licenses: ["Apache-2.0"],
       links: %{
         "GitHub" => @github_url,
         "Membrane Framework Homepage" => "https://membraneframework.org"
@@ -49,7 +49,6 @@ defmodule Membrane.AAC.Format.MixProject do
 
   defp deps do
     [
-      {:membrane_core, "~> 0.8.0"},
       {:bimap, "~> 1.1"},
       {:ex_doc, "~> 0.21", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false}
