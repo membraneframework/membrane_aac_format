@@ -58,77 +58,85 @@ defmodule Membrane.AAC do
                 encapsulation: :none
               ]
 
-  @audio_object_type BiMap.new(%{
-                       1 => :main,
-                       2 => :LC,
-                       3 => :SSR,
-                       4 => :LTP,
-                       5 => :HE,
-                       29 => :HEv2
-                     })
+  defp audio_object_type(),
+    do:
+      BiMap.new(%{
+        1 => :main,
+        2 => :LC,
+        3 => :SSR,
+        4 => :LTP,
+        5 => :HE,
+        29 => :HEv2
+      })
 
-  @sampling_frequency BiMap.new(%{
-                        0 => 96000,
-                        1 => 88200,
-                        2 => 64000,
-                        3 => 48000,
-                        4 => 44100,
-                        5 => 32000,
-                        6 => 24000,
-                        7 => 22050,
-                        8 => 16000,
-                        9 => 12000,
-                        10 => 11025,
-                        11 => 8000,
-                        12 => 7350,
-                        15 => :explicit
-                      })
+  defp sampling_frequency(),
+    do:
+      BiMap.new(%{
+        0 => 96_000,
+        1 => 88_200,
+        2 => 64_000,
+        3 => 48_000,
+        4 => 44_100,
+        5 => 32_000,
+        6 => 24_000,
+        7 => 22_050,
+        8 => 16_000,
+        9 => 12_000,
+        10 => 11_025,
+        11 => 8000,
+        12 => 7350,
+        15 => :explicit
+      })
 
-  @channel_config BiMap.new(%{
-                    0 => :AOT_specific,
-                    1 => 1,
-                    2 => 2,
-                    3 => 3,
-                    4 => 4,
-                    5 => 5,
-                    6 => 6,
-                    7 => 8
-                  })
+  defp channel_config(),
+    do:
+      BiMap.new(%{
+        0 => :AOT_specific,
+        1 => 1,
+        2 => 2,
+        3 => 3,
+        4 => 4,
+        5 => 5,
+        6 => 6,
+        7 => 8
+      })
 
-  @frame_length BiMap.new(%{
-                  0 => 1024,
-                  1 => 960
-                })
+  defp frame_length(),
+    do:
+      BiMap.new(%{
+        0 => 1024,
+        1 => 960
+      })
 
   @spec aot_id_to_profile(audio_object_type_id_t) :: profile_t
   def aot_id_to_profile(audio_object_type_id),
-    do: BiMap.fetch!(@audio_object_type, audio_object_type_id)
+    do: BiMap.fetch!(audio_object_type(), audio_object_type_id)
 
   @spec profile_to_aot_id(profile_t) :: audio_object_type_id_t
-  def profile_to_aot_id(profile), do: BiMap.fetch_key!(@audio_object_type, profile)
+  def profile_to_aot_id(profile), do: BiMap.fetch_key!(audio_object_type(), profile)
 
   @spec sampling_frequency_id_to_sample_rate(sampling_frequency_id_t) :: pos_integer
   def sampling_frequency_id_to_sample_rate(sampling_frequency_id),
-    do: BiMap.fetch!(@sampling_frequency, sampling_frequency_id)
+    do: BiMap.fetch!(sampling_frequency(), sampling_frequency_id)
 
   @spec sample_rate_to_sampling_frequency_id(sample_rate :: pos_integer | :explicit) ::
           sampling_frequency_id_t
   def sample_rate_to_sampling_frequency_id(sample_rate),
-    do: BiMap.fetch_key!(@sampling_frequency, sample_rate)
+    do: BiMap.fetch_key!(sampling_frequency(), sample_rate)
 
   @spec channel_config_id_to_channels(channel_config_id_t) :: pos_integer | :AOT_specific
   def channel_config_id_to_channels(channel_config_id),
-    do: BiMap.fetch!(@channel_config, channel_config_id)
+    do: BiMap.fetch!(channel_config(), channel_config_id)
 
   @spec channels_to_channel_config_id(channels :: pos_integer | :AOT_specific) ::
           channel_config_id_t
-  def channels_to_channel_config_id(channels), do: BiMap.fetch_key!(@channel_config, channels)
+  def channels_to_channel_config_id(channels), do: BiMap.fetch_key!(channel_config(), channels)
 
   @spec frame_length_id_to_samples_per_frame(frame_length_id_t) :: samples_per_frame_t
   def frame_length_id_to_samples_per_frame(frame_length_id),
-    do: BiMap.fetch!(@frame_length, frame_length_id)
+    do: BiMap.fetch!(frame_length(), frame_length_id)
 
   @spec samples_per_frame_to_frame_length_id(samples_per_frame_t) :: pos_integer
   def samples_per_frame_to_frame_length_id(samples_per_frame),
-    do: BiMap.fetch_key!(@frame_length, samples_per_frame)
+    do: BiMap.fetch_key!(frame_length(), samples_per_frame)
 end
