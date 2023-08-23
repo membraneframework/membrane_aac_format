@@ -3,7 +3,7 @@ defmodule Membrane.AAC do
   Capabilities for [Advanced Audio Codec](https://wiki.multimedia.cx/index.php/Understanding_AAC).
   """
 
-  @type profile :: :main | :LC | :SSR | :LTP | :HE | :HEv2
+  @type profile :: :main | :LC | :SSR | :LTP | :HE | :HEv2 | nil
   @type samples_per_frame :: 1024 | 960
   @type mpeg_version :: 2 | 4
 
@@ -51,7 +51,7 @@ defmodule Membrane.AAC do
   @type config :: {:esds | :audio_specific_config, binary()} | nil
 
   @type t :: %__MODULE__{
-          profile: profile() | nil,
+          profile: profile(),
           mpeg_version: mpeg_version(),
           sample_rate: pos_integer() | nil,
           channels: pos_integer() | nil,
