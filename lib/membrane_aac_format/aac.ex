@@ -134,14 +134,14 @@ defmodule Membrane.AAC do
   @spec profile_to_aot_id(profile()) :: audio_object_type_id()
   def profile_to_aot_id(profile), do: BiMap.fetch_key!(audio_object_type_map(), profile)
 
-  @spec sampling_frequency_id_to_sample_rate(sampling_frequency_id()) :: pos_integer()
+  @spec sampling_frequency_id_to_sample_rate(sampling_frequency_id()) :: pos_integer() | :explicit
   def sampling_frequency_id_to_sample_rate(sampling_frequency_id),
     do: BiMap.fetch!(sampling_frequency_map(), sampling_frequency_id)
 
-  @spec sample_rate_to_sampling_frequency_id(sample_rate :: pos_integer() | :explicit) ::
+  @spec sample_rate_to_sampling_frequency_id(sample_rate :: pos_integer()) ::
           sampling_frequency_id()
   def sample_rate_to_sampling_frequency_id(sample_rate),
-    do: BiMap.fetch_key!(sampling_frequency_map(), sample_rate)
+    do: BiMap.get_key(sampling_frequency_map(), sample_rate, 15)
 
   @spec channel_config_id_to_channels(channel_config_id()) :: pos_integer() | :AOT_specific
   def channel_config_id_to_channels(channel_config_id),
