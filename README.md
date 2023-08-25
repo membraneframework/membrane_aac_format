@@ -9,7 +9,7 @@
 Add the following line to your `deps` in `mix.exs`. Run `mix deps.get`.
 
 ```elixir
-{:membrane_aac_format, "~> 0.7.1"}
+{:membrane_aac_format, "~> 0.8.0"}
 ```
 
 ## Copyright and License
