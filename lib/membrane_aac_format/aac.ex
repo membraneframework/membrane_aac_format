@@ -149,7 +149,8 @@ defmodule Membrane.AAC do
 
   @spec channels_to_channel_config_id(channels :: pos_integer() | :AOT_specific) ::
           channel_config_id()
-  def channels_to_channel_config_id(channels), do: BiMap.fetch_key!(channel_config_map(), channels)
+  def channels_to_channel_config_id(channels),
+    do: BiMap.fetch_key!(channel_config_map(), channels)
 
   @spec frame_length_id_to_samples_per_frame(frame_length_id()) :: samples_per_frame()
   def frame_length_id_to_samples_per_frame(frame_length_id),
