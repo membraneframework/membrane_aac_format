@@ -6,6 +6,7 @@ defmodule Membrane.AAC.Format.MixProject do
 
   def project do
     [
+      homepage_url: "https://membrane.stream",
       app: :membrane_aac_format,
       version: @version,
       elixir: "~> 1.7",
