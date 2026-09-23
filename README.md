@@ -2,14 +2,13 @@
 
 [![Hex.pm](https://img.shields.io/hexpm/v/membrane_aac_format.svg)](https://hex.pm/packages/membrane_aac_format)
 [![API Docs](https://img.shields.io/badge/api-docs-yellow.svg?style=flat)](https://hexdocs.pm/membrane_aac_format/)
-[![CircleCI](https://circleci.com/gh/membraneframework/membrane_aac_format.svg?style=svg)](https://circleci.com/gh/membraneframework/membrane_aac_format)
 
 ## Installation
 
 Add the following line to your `deps` in `mix.exs`. Run `mix deps.get`.
 
 ```elixir
-{:membrane_aac_format, "~> 0.8.1"}
+{:membrane_aac_format, "~> 0.9.0"}
 ```
 
 ## Copyright and License

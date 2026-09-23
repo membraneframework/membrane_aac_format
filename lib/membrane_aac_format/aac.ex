@@ -127,15 +127,28 @@ defmodule Membrane.AAC do
         1 => 2
       })
 
-  @spec aot_id_to_profile(audio_object_type_id()) :: profile()
+  @spec aot_id_to_profile(audio_object_type_id()) :: {:ok, profile()} | :error
   def aot_id_to_profile(audio_object_type_id),
+    do: BiMap.fetch(audio_object_type_map(), audio_object_type_id)
+
+  @spec aot_id_to_profile!(audio_object_type_id()) :: profile()
+  def aot_id_to_profile!(audio_object_type_id),
     do: BiMap.fetch!(audio_object_type_map(), audio_object_type_id)
 
-  @spec profile_to_aot_id(profile()) :: audio_object_type_id()
-  def profile_to_aot_id(profile), do: BiMap.fetch_key!(audio_object_type_map(), profile)
+  @spec profile_to_aot_id(profile()) :: {:ok, audio_object_type_id()} | :error
+  def profile_to_aot_id(profile), do: BiMap.fetch_key(audio_object_type_map(), profile)
 
-  @spec sampling_frequency_id_to_sample_rate(sampling_frequency_id()) :: pos_integer() | :explicit
+  @spec profile_to_aot_id!(profile()) :: audio_object_type_id()
+  def profile_to_aot_id!(profile), do: BiMap.fetch_key!(audio_object_type_map(), profile)
+
+  @spec sampling_frequency_id_to_sample_rate(sampling_frequency_id()) ::
+          {:ok, pos_integer() | :explicit} | :error
   def sampling_frequency_id_to_sample_rate(sampling_frequency_id),
+    do: BiMap.fetch(sampling_frequency_map(), sampling_frequency_id)
+
+  @spec sampling_frequency_id_to_sample_rate!(sampling_frequency_id()) ::
+          pos_integer() | :explicit
+  def sampling_frequency_id_to_sample_rate!(sampling_frequency_id),
     do: BiMap.fetch!(sampling_frequency_map(), sampling_frequency_id)
 
   @spec sample_rate_to_sampling_frequency_id(sample_rate :: pos_integer()) ::
@@ -143,28 +156,56 @@ defmodule Membrane.AAC do
   def sample_rate_to_sampling_frequency_id(sample_rate),
     do: BiMap.get_key(sampling_frequency_map(), sample_rate, 15)
 
-  @spec channel_config_id_to_channels(channel_config_id()) :: pos_integer() | :AOT_specific
+  @spec channel_config_id_to_channels(channel_config_id()) ::
+          {:ok, pos_integer() | :AOT_specific} | :error
   def channel_config_id_to_channels(channel_config_id),
+    do: BiMap.fetch(channel_config_map(), channel_config_id)
+
+  @spec channel_config_id_to_channels!(channel_config_id()) :: pos_integer() | :AOT_specific
+  def channel_config_id_to_channels!(channel_config_id),
     do: BiMap.fetch!(channel_config_map(), channel_config_id)
 
   @spec channels_to_channel_config_id(channels :: pos_integer() | :AOT_specific) ::
-          channel_config_id()
+          {:ok, channel_config_id()} | :error
   def channels_to_channel_config_id(channels),
+    do: BiMap.fetch_key(channel_config_map(), channels)
+
+  @spec channels_to_channel_config_id!(channels :: pos_integer() | :AOT_specific) ::
+          channel_config_id()
+  def channels_to_channel_config_id!(channels),
     do: BiMap.fetch_key!(channel_config_map(), channels)
 
-  @spec frame_length_id_to_samples_per_frame(frame_length_id()) :: samples_per_frame()
+  @spec frame_length_id_to_samples_per_frame(frame_length_id()) ::
+          {:ok, samples_per_frame()} | :error
   def frame_length_id_to_samples_per_frame(frame_length_id),
+    do: BiMap.fetch(frame_length_map(), frame_length_id)
+
+  @spec frame_length_id_to_samples_per_frame!(frame_length_id()) :: samples_per_frame()
+  def frame_length_id_to_samples_per_frame!(frame_length_id),
     do: BiMap.fetch!(frame_length_map(), frame_length_id)
 
-  @spec samples_per_frame_to_frame_length_id(samples_per_frame()) :: pos_integer()
+  @spec samples_per_frame_to_frame_length_id(samples_per_frame()) ::
+          {:ok, frame_length_id()} | :error
   def samples_per_frame_to_frame_length_id(samples_per_frame),
+    do: BiMap.fetch_key(frame_length_map(), samples_per_frame)
+
+  @spec samples_per_frame_to_frame_length_id!(samples_per_frame()) :: frame_length_id()
+  def samples_per_frame_to_frame_length_id!(samples_per_frame),
     do: BiMap.fetch_key!(frame_length_map(), samples_per_frame)
 
-  @spec mpeg_version_to_mpeg_version_id(mpeg_version()) :: mpeg_version_id()
+  @spec mpeg_version_to_mpeg_version_id(mpeg_version()) :: {:ok, mpeg_version_id()} | :error
   def mpeg_version_to_mpeg_version_id(mpeg_version),
+    do: BiMap.fetch_key(mpeg_version_map(), mpeg_version)
+
+  @spec mpeg_version_to_mpeg_version_id!(mpeg_version()) :: mpeg_version_id()
+  def mpeg_version_to_mpeg_version_id!(mpeg_version),
     do: BiMap.fetch_key!(mpeg_version_map(), mpeg_version)
 
-  @spec mpeg_version_id_to_mpeg_version(mpeg_version_id()) :: mpeg_version()
+  @spec mpeg_version_id_to_mpeg_version(mpeg_version_id()) :: {:ok, mpeg_version()} | :error
   def mpeg_version_id_to_mpeg_version(mpeg_version_id),
+    do: BiMap.fetch(mpeg_version_map(), mpeg_version_id)
+
+  @spec mpeg_version_id_to_mpeg_version!(mpeg_version_id()) :: mpeg_version()
+  def mpeg_version_id_to_mpeg_version!(mpeg_version_id),
     do: BiMap.fetch!(mpeg_version_map(), mpeg_version_id)
 end
